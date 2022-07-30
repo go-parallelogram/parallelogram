@@ -13,8 +13,8 @@ func TestRunPolling(t *testing.T) {
 
 	bot, _ := NewBot("", "token")
 
-	assert.NoError(t, RunPolling(bot, HandlerFunc(func(upd Update) {
-		updateJson, _ := json.Marshal(upd)
-		log.Println(string(updateJson))
+	assert.NoError(t, RunPolling(bot, HandlerFunc(func(upd *Update) {
+		updateJSON, _ := json.Marshal(upd)
+		log.Println(string(updateJSON))
 	})))
 }

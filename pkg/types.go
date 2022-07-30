@@ -2,7 +2,7 @@ package gotelebot
 
 import "encoding/json"
 
-type ApiResponse[ResultType any] struct {
+type APIResponse[ResultType any] struct {
 	Ok          bool       `json:"ok"`
 	Result      ResultType `json:"result,omitempty"`
 	Description string     `json:"description,omitempty"`
