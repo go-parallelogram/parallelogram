@@ -22,4 +22,3 @@ repos:
     rev: v1.47.2
     hooks:
       - id: golangci-lint
-
