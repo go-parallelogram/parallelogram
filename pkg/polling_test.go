@@ -2,9 +2,10 @@ package gotelebot
 
 import (
 	"encoding/json"
-	"github.com/stretchr/testify/assert"
 	"log"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestRunPolling(t *testing.T) {
