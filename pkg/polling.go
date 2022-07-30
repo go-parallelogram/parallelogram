@@ -1,17 +1,17 @@
 package gotelebot
 
 type UpdateHandler interface {
-	HandleUpdate(upd Update)
+	HandleUpdate(upd *Update)
 }
 
-type HandlerFunc func(upd Update)
+type HandlerFunc func(upd *Update)
 
-func (h HandlerFunc) HandleUpdate(upd Update) {
+func (h HandlerFunc) HandleUpdate(upd *Update) {
 	h(upd)
 }
 
 func RunPolling(bot *Bot, handler UpdateHandler) error {
-	var offset int64 = 0
+	offset := int64(0)
 
 	for {
 		updates, err := bot.GetUpdates(GetUpdatesParams{
