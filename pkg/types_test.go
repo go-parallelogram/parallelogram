@@ -23,3 +23,15 @@ func TestUpdate_Context(t *testing.T) {
 
 	assert.Equal(t, upd.Context(), valuedContext)
 }
+
+func TestUpdate_Bot(t *testing.T) {
+	bot := &Bot{}
+
+	upd := &Update{}
+
+	assert.Equal(t, (*Bot)(nil), upd.Bot())
+
+	upd = upd.WithBot(bot)
+
+	assert.Equal(t, upd.Bot(), bot)
+}
