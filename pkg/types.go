@@ -1,6 +1,28 @@
 package gotelebot
 
-import "encoding/json"
+import (
+	"context"
+	"encoding/json"
+)
+
+const (
+	MessageUpdate            UpdateType = "message"
+	EditedMessageUpdate      UpdateType = "edited_message"
+	ChannelPostUpdate        UpdateType = "channel_post"
+	EditedChannelPostUpdate  UpdateType = "edited_channel_post"
+	InlineQueryUpdate        UpdateType = "inline_query"
+	ChosenInlineResultUpdate UpdateType = "chosen_inline_result"
+	CallbackQueryUpdate      UpdateType = "callback_query"
+	ShippingQueryUpdate      UpdateType = "shipping_query"
+	PreCheckoutQueryUpdate   UpdateType = "pre_checkout_query"
+	PollUpdate               UpdateType = "poll"
+	PollAnswerUpdate         UpdateType = "poll_answer"
+	MyChatMemberUpdate       UpdateType = "my_chat_member"
+	ChatMemberUpdate         UpdateType = "chat_member"
+	ChatJoinRequestUpdate    UpdateType = "chat_join_request"
+)
+
+type UpdateType string
 
 type APIResponse[ResultType any] struct {
 	Ok          bool       `json:"ok"`
@@ -14,6 +36,8 @@ type APIResponse[ResultType any] struct {
 }
 
 type Update struct {
+	ctx context.Context
+
 	UpdateID           int64           `json:"update_id"`
 	Message            json.RawMessage `json:"message,omitempty"`
 	EditedMessage      json.RawMessage `json:"edited_message,omitempty"`
@@ -75,6 +99,26 @@ func (u *Update) Type() UpdateType {
 		return ChatJoinRequestUpdate
 	}
 	return ""
+}
+
+func (u *Update) Context() context.Context {
+	if u.ctx != nil {
+		return u.ctx
+	}
+	return context.Background()
+}
+
+func (u *Update) WithContext(ctx context.Context) *Update {
+	if ctx == nil {
+		return u
+	}
+
+	newUpdate := new(Update)
+	*newUpdate = *u
+
+	newUpdate.ctx = ctx
+
+	return newUpdate
 }
 
 type User struct {
