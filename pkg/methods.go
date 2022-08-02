@@ -8,15 +8,16 @@ import (
 )
 
 func (b *Bot) GetUpdates(params GetUpdatesParams) ([]*Update, error) {
-	return MakeRequest[[]*Update](b, "getUpdates", params)
+	return makeRequest[[]*Update](b, "getUpdates", params)
 }
 
 func (b *Bot) GetMe() (User, error) {
-	return MakeRequest[User](b, "getMe", nil)
+	return makeRequest[User](b, "getMe", nil)
 }
 
-func MakeRequest[ResponseType any](b *Bot, method string, params any) (ResponseType, error) {
+func makeRequest[ResponseType any](b *Bot, method string, params any) (ResponseType, error) {
 	const contentType = "application/json"
+
 	var emptyResponse ResponseType
 
 	requestBody, err := json.Marshal(params)
