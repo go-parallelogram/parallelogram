@@ -23,11 +23,16 @@ const (
 
 type UpdateType string
 
-type APIResponse[ResultType any] struct {
-	Ok          bool       `json:"ok"`
-	Result      ResultType `json:"result,omitempty"`
-	Description string     `json:"description,omitempty"`
-	ErrorCode   int        `json:"error_code,omitempty"`
+type SuccessfulAPIResponse[ResponseType any] struct {
+	Ok     bool         `json:"ok"`
+	Result ResponseType `json:"result"`
+}
+
+type FailureAPIResponse struct {
+	Ok bool `json:"ok"`
+
+	Description string `json:"description,omitempty"`
+	ErrorCode   int    `json:"error_code,omitempty"`
 	Parameters  struct {
 		MigrateToChatID int64 `json:"migrate_to_chat_id,omitempty"`
 		RetryAfter      int   `json:"retry_after,omitempty"`

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 )
 
 func (b *Bot) GetUpdates(params GetUpdatesParams) ([]*Update, error) {
@@ -40,12 +41,21 @@ func makeRequest[ResponseType any](b *Bot, method string, params any) (ResponseT
 		}
 	}()
 
-	var apiResponse APIResponse[ResponseType]
-	if err := json.NewDecoder(resp.Body).Decode(&apiResponse); err != nil {
+	if resp.StatusCode == http.StatusOK {
+		var successfulAPIResponse SuccessfulAPIResponse[ResponseType]
+		if err := json.NewDecoder(resp.Body).Decode(&successfulAPIResponse); err != nil {
+			return emptyResponse, err
+		}
+
+		return successfulAPIResponse.Result, nil
+	}
+
+	var failureAPIResponse FailureAPIResponse
+	if err := json.NewDecoder(resp.Body).Decode(&failureAPIResponse); err != nil {
 		return emptyResponse, err
 	}
 
 	// TODO add error handling on !apiResponse.Ok
 
-	return apiResponse.Result, nil
+	return emptyResponse, nil
 }

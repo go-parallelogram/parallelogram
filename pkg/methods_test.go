@@ -14,7 +14,7 @@ func TestBot_GetMe(t *testing.T) {
 
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		resp, _ := json.Marshal(APIResponse[User]{
+		resp, _ := json.Marshal(SuccessfulAPIResponse[User]{
 			Ok: true,
 			Result: User{
 				ID: 1,
