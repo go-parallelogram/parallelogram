@@ -9,6 +9,7 @@ import (
 )
 
 func TestRunPolling(t *testing.T) {
+	t.Skip("Not implemented")
 	t.Parallel()
 
 	bot, _ := NewBot("", "token")
