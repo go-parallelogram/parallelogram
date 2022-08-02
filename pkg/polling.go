@@ -23,13 +23,7 @@ func RunPolling(bot *Bot, handler UpdateHandler) error {
 
 		for _, update := range updates {
 			offset = update.UpdateID + 1
-			handleUpdate(handler, bot, update)
+			handler.HandleUpdate(update)
 		}
 	}
-}
-
-func handleUpdate(handler UpdateHandler, bot *Bot, upd *Update) {
-	upd = upd.WithBot(bot)
-
-	handler.HandleUpdate(upd)
 }

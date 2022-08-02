@@ -1,7 +1,6 @@
 package gotelebot
 
 import (
-	"context"
 	"encoding/json"
 )
 
@@ -36,8 +35,6 @@ type APIResponse[ResultType any] struct {
 }
 
 type Update struct {
-	ctx context.Context
-
 	UpdateID           int64           `json:"update_id"`
 	Message            json.RawMessage `json:"message,omitempty"`
 	EditedMessage      json.RawMessage `json:"edited_message,omitempty"`
@@ -99,45 +96,6 @@ func (u *Update) Type() UpdateType {
 		return ChatJoinRequestUpdate
 	}
 	return ""
-}
-
-func (u *Update) Context() context.Context {
-	if u.ctx != nil {
-		return u.ctx
-	}
-	return context.Background()
-}
-
-func (u *Update) WithContext(ctx context.Context) *Update {
-	if ctx == nil {
-		return u
-	}
-
-	newUpdate := new(Update)
-	*newUpdate = *u
-
-	newUpdate.ctx = ctx
-
-	return newUpdate
-}
-
-type botCtxKey struct{}
-
-func (u *Update) WithBot(bot *Bot) *Update {
-	if savedBot, ok := u.Context().Value(botCtxKey{}).(*Bot); ok {
-		if savedBot == bot {
-			return u
-		}
-	}
-
-	return u.WithContext(context.WithValue(u.Context(), botCtxKey{}, bot))
-}
-
-func (u *Update) Bot() *Bot {
-	if bot := u.Context().Value(botCtxKey{}); bot != nil {
-		return bot.(*Bot)
-	}
-	return nil
 }
 
 type User struct {
